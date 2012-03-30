@@ -36,6 +36,8 @@
           </map>
           <key>manifest</key>
           <array>
+            <string>dictionaries/dictionaries.xml</string>
+            <string>dictionaries/*.dic</string>
             <string>dictionaries/*.oxt</string>
             <string>dictionaries/*.zip</string>
             <string>LICENSES/*.txt</string>
