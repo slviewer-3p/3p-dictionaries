@@ -32,10 +32,16 @@ test -d ${DICT_DIR} || mkdir ${DICT_DIR}
 ## For each dictionary:
 ##   1) Put the package itself in the DICT_DIR 
 ##      with the name <lang>_<variant>.<suffix> 
-##      where <suffix> is either .oxt or .zip
+##      where <suffix> is .oxt, .zip, or .dic
 ##   2) Extract the license for the dictionary 
 ##      into LICENSE_DIR with the name
 ##      <lang>_<variant>-dictionary-license.txt
+
+# Dictionary meta-data
+cp -v "${SRC_DIR}/dictionaries.xml" "${DICT_DIR}/"
+
+# Second Life
+cp -v "${SRC_DIR}/sl.dic" "${DICT_DIR}/sl.dic"
 
 # American English
 cp -v "${SRC_DIR}/en_US.oxt" "${DICT_DIR}/en_US.oxt"
