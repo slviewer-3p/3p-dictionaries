@@ -44,24 +44,32 @@ cp -v "${SRC_DIR}/dictionaries.xml" "${DICT_DIR}/"
 cp -v "${SRC_DIR}/sl.dic" "${DICT_DIR}/sl.dic"
 
 # American English
-cp -v "${SRC_DIR}/en_US.oxt" "${DICT_DIR}/en_US.oxt"
-unzip -jaa "${SRC_DIR}/en_US.oxt" README_en_US.txt
-mv -v README_en_US.txt "${LICENSE_DIR}/en_US-dictionary-license.txt"
+mkdir en_US
+unzip -j -aa -d en_US        "${SRC_DIR}/en_US.oxt" 
+cp -v en_US/en_US.dic        "${DICT_DIR}/en_us.dic"
+cp -v en_US/en_US.aff        "${DICT_DIR}/en_us.aff"
+cp -v en_US/README_en_US.txt "${LICENSE_DIR}/en_us-dictionary-license.txt"
 
 # British English
-cp -v "${SRC_DIR}/en-GB.zip" "${DICT_DIR}/en_GB.zip"
-unzip -jaa "${SRC_DIR}/en-GB.zip" README_en_GB.txt
-mv -v README_en_GB.txt "${LICENSE_DIR}/en_GB-dictionary-license.txt"
+mkdir en_UK
+unzip -j -aa -d en_UK        "${SRC_DIR}/en-GB.zip"
+cp -v en_UK/en-GB.dic        "${DICT_DIR}/en_gb.dic"
+cp -v en_UK/en-GB.aff        "${DICT_DIR}/en_gb.aff"
+cp -v en_UK/README_en_GB.txt "${LICENSE_DIR}/en_gb-dictionary-license.txt"
 
 # Spanish Spanish
-cp -v "${SRC_DIR}/es_ES.oxt" "${DICT_DIR}/es_ES.oxt"
-unzip -jaa "${SRC_DIR}/es_ES.oxt" README.txt
-mv -v README.txt "${LICENSE_DIR}/es_ES-dictionary-license.txt"
+mkdir es_ES
+unzip -j -aa -d es_ES  "${SRC_DIR}/es_ES.oxt" 
+cp -v es_ES/es_ES.dic  "${DICT_DIR}/es_es.dic"
+cp -v es_ES/es_ES.aff  "${DICT_DIR}/es_es.aff"
+cp -v es_ES/README.txt "${LICENSE_DIR}/es_es-dictionary-license.txt"
 
 # Brazillian Portugese
-cp -v "${SRC_DIR}/Vero_pt_BR_V208AOC.oxt" "${DICT_DIR}/pt_BR.oxt"
-unzip -jaa "${SRC_DIR}/Vero_pt_BR_V208AOC.oxt" README_en.TXT
-mv -v README_en.TXT "${LICENSE_DIR}/pt_BR-dictionary-license.txt"
+mkdir pt_BR
+unzip -j -aa -d pt_BR     "${SRC_DIR}/Vero_pt_BR_V208AOC.oxt"
+cp -v pt_BR/pt_BR.dic     "${DICT_DIR}/pt_br.dic"
+cp -v pt_BR/pt_BR.aff     "${DICT_DIR}/pt_br.aff"
+cp -v pt_BR/README_en.TXT "${LICENSE_DIR}/pt_br-dictionary-license.txt"
 
 pass
 
