@@ -21,6 +21,8 @@
           <map>
             <key>Release</key>
             <map>
+              <key>default</key>
+              <string>True</string>
               <key>build</key>
               <map>
                 <key>arguments</key>
@@ -43,60 +45,6 @@
           </array>
           <key>name</key>
           <string>common</string>
-        </map>
-        <key>darwin</key>
-        <map>
-          <key>configurations</key>
-          <map>
-            <key>Release</key>
-            <map>
-              <key>build</key>
-              <map>
-              </map>
-              <key>default</key>
-              <string>true</string>
-              <key>name</key>
-              <string>Release</string>
-            </map>
-          </map>
-          <key>name</key>
-          <string>darwin</string>
-        </map>
-        <key>linux</key>
-        <map>
-          <key>configurations</key>
-          <map>
-            <key>Release</key>
-            <map>
-              <key>build</key>
-              <map>
-              </map>
-              <key>default</key>
-              <string>True</string>
-              <key>name</key>
-              <string>Release</string>
-            </map>
-          </map>
-          <key>name</key>
-          <string>linux</string>
-        </map>
-        <key>windows</key>
-        <map>
-          <key>configurations</key>
-          <map>
-            <key>Release</key>
-            <map>
-              <key>build</key>
-              <map>
-              </map>
-              <key>default</key>
-              <string>true</string>
-              <key>name</key>
-              <string>Release</string>
-            </map>
-          </map>
-          <key>name</key>
-          <string>windows</string>
         </map>
       </map>
       <key>version</key>
