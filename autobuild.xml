@@ -3,6 +3,8 @@
 <map>
     <key>package_description</key>
     <map>
+      <key>copyright</key>
+      <string>Copyright 2014 Apache OpenOffice software</string>
       <key>description</key>
       <string>Spell checking dictionaries to bundled into the viewer</string>
       <key>license</key>
@@ -99,12 +101,12 @@
           <string>windows</string>
         </map>
       </map>
-      <key>version</key>
-      <string>1</string>
+      <key>version_file</key>
+      <string>VERSION.txt</string>
     </map>
     <key>type</key>
     <string>autobuild</string>
     <key>version</key>
-    <string>1.2</string>
+    <string>1.3</string>
   </map>
 </llsd>

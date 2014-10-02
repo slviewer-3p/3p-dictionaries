@@ -26,6 +26,10 @@ LICENSE_DIR="${STAGING_DIR}/LICENSES"
 test -d ${LICENSE_DIR} || mkdir ${LICENSE_DIR}
 echo "See *-dictionary-license.txt" > "${LICENSE_DIR}/dictionaries.txt"
 
+dictionaries_version=1
+build=${AUTOBUILD_BUILD_ID:=0}
+echo "${dictionaries_version}.${build}" > "${STAGING_DIR}/VERSION.txt"
+
 DICT_DIR="${STAGING_DIR}/dictionaries"
 test -d ${DICT_DIR} || mkdir ${DICT_DIR}
 
