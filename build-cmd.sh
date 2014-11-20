@@ -47,30 +47,33 @@ cp -v "${SRC_DIR}/dictionaries.xml" "${DICT_DIR}/"
 # Second Life
 cp -v "${SRC_DIR}/sl.dic" "${DICT_DIR}/sl.dic"
 
+
+# Note: we use Python to extract files from zip - can't rely on unzip
+
 # American English
 mkdir en_US
-unzip -j -aa -d en_US        "${SRC_DIR}/en_US.oxt" 
+python -c "import zipfile; zipfile.ZipFile('${SRC_DIR}/en_US.oxt').extractall('en_US')"
 cp -v en_US/en_US.dic        "${DICT_DIR}/en_us.dic"
 cp -v en_US/en_US.aff        "${DICT_DIR}/en_us.aff"
 cp -v en_US/README_en_US.txt "${LICENSE_DIR}/en_us-dictionary-license.txt"
 
 # British English
 mkdir en_UK
-unzip -j -aa -d en_UK        "${SRC_DIR}/en-GB.zip"
+python -c "import zipfile; zipfile.ZipFile('${SRC_DIR}/en-GB.zip').extractall('en_UK')"
 cp -v en_UK/en-GB.dic        "${DICT_DIR}/en_gb.dic"
 cp -v en_UK/en-GB.aff        "${DICT_DIR}/en_gb.aff"
 cp -v en_UK/README_en_GB.txt "${LICENSE_DIR}/en_gb-dictionary-license.txt"
 
 # Spanish Spanish
 mkdir es_ES
-unzip -j -aa -d es_ES  "${SRC_DIR}/es_ES.oxt" 
+python -c "import zipfile; zipfile.ZipFile('${SRC_DIR}/es_ES.oxt').extractall('es_ES')"
 cp -v es_ES/es_ES.dic  "${DICT_DIR}/es_es.dic"
 cp -v es_ES/es_ES.aff  "${DICT_DIR}/es_es.aff"
 cp -v es_ES/README.txt "${LICENSE_DIR}/es_es-dictionary-license.txt"
 
 # Brazillian Portugese
 mkdir pt_BR
-unzip -j -aa -d pt_BR     "${SRC_DIR}/Vero_pt_BR_V208AOC.oxt"
+python -c "import zipfile; zipfile.ZipFile('${SRC_DIR}/Vero_pt_BR_V208AOC.oxt').extractall('pt_BR')"
 cp -v pt_BR/pt_BR.dic     "${DICT_DIR}/pt_br.dic"
 cp -v pt_BR/pt_BR.aff     "${DICT_DIR}/pt_br.aff"
 cp -v pt_BR/README_en.TXT "${LICENSE_DIR}/pt_br-dictionary-license.txt"
