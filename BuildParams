@@ -1,4 +1,6 @@
 # Use Public Upload Locations
 public_build = true
 AUTOBUILD_PLATFORM_OVERRIDE = common
+build_Darwin = false
+build_CYGWIN = false
 
