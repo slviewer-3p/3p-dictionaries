@@ -4,19 +4,26 @@
 set -x
 # make errors fatal
 set -e
+# complain about unset env variables
+set -u
 
 if [ -z "$AUTOBUILD" ] ; then 
     fail
 fi
 
 if [ "$OSTYPE" = "cygwin" ] ; then
-    export AUTOBUILD="$(cygpath -u $AUTOBUILD)"
+    autobuild="$(cygpath -u $AUTOBUILD)"
+else
+    autobuild="$AUTOBUILD"
 fi
 
 # load autbuild provided shell functions and variables
 set +x
-eval "$("$AUTOBUILD" source_environment)"
+eval "$("$autobuild" source_environment)"
 set -x
+
+# set LL_BUILD and friends
+set_build_variables convenience Release
 
 STAGING_DIR="$(pwd)"
 TOP_DIR="$(dirname "$0")"
@@ -33,6 +40,12 @@ echo "${dictionaries_version}.${build}" > "${STAGING_DIR}/VERSION.txt"
 DICT_DIR="${STAGING_DIR}/dictionaries"
 test -d ${DICT_DIR} || mkdir ${DICT_DIR}
 
+# Dictionary meta-data
+cp -v "${SRC_DIR}/dictionaries.xml" "${DICT_DIR}/"
+
+# Second Life
+cp -v "${SRC_DIR}/sl.dic" "${DICT_DIR}/sl.dic"
+
 ## For each dictionary:
 ##   1) Put the package itself in the DICT_DIR 
 ##      with the name <lang>_<variant>.<suffix> 
@@ -40,43 +53,50 @@ test -d ${DICT_DIR} || mkdir ${DICT_DIR}
 ##   2) Extract the license for the dictionary 
 ##      into LICENSE_DIR with the name
 ##      <lang>_<variant>-dictionary-license.txt
+function extract {
+    # e.g. "$SRC_DIR/en_US.oxt"
+    local file="$1"
+    # e.g. "en_US.oxt"
+    local base="$(basename "$1")"
+    # lang (e.g. "en_US") can be explicitly passed as second param,
+    # but if omitted, strip off directory and extension from filename.
+    # Within $file we expect to find $lang.dic and $lang.aff.
+    local lang="${2:-${base%.*}}"
+    # Even though region within $lang tends to be capitalized (e.g. en_US),
+    # the files in $DICT_DIR should have uniform lowercase names.
+    local lowlang="$(echo "$lang" | tr '[[:upper:]]' '[[:lower:]]')"
+    # also, we want dest files to uniformly use underscore, not hyphen
+    lowlang="${lowlang/-/_}"
+    # Optionally pass name of license file; if omitted, copy whatever we find
+    # that looks like README*.txt. We really expect README_$lang.txt, and in
+    # most cases that's what we should find. However, en-GB.zip contains
+    # en-GB.dic, en-GB.aff and README_en_GB.txt (note inconsistent
+    # underscore). Finess that by copying whatever README_*.txt we find there:
+    # we're going to make its name uniform anyway.
+    local licfile="${3:-README*.txt}"
 
-# Dictionary meta-data
-cp -v "${SRC_DIR}/dictionaries.xml" "${DICT_DIR}/"
-
-# Second Life
-cp -v "${SRC_DIR}/sl.dic" "${DICT_DIR}/sl.dic"
-
-
-# Note: we use Python to extract files from zip - can't rely on unzip
+    # extract from zipfile into directory named for language
+    mkdir -p "$lang"
+    # Note: we use Python to extract files from zip - can't rely on unzip on Windows
+    python -c "import zipfile; zipfile.ZipFile(r'$file').extractall(r'$lang')"
+    for ext in dic aff
+    do # within $lang directory, expect to find $lang.$ext
+       # lowercase language name when we copy
+       cp -v "$lang/$lang.$ext" "${DICT_DIR}/$lowlang.$ext"
+    done
+    cp -v "$lang"/$licfile "${LICENSE_DIR}/$lowlang-dictionary-license.txt"
+}
 
 # American English
-mkdir en_US
-python -c "import zipfile; zipfile.ZipFile('${SRC_DIR}/en_US.oxt').extractall('en_US')"
-cp -v en_US/en_US.dic        "${DICT_DIR}/en_us.dic"
-cp -v en_US/en_US.aff        "${DICT_DIR}/en_us.aff"
-cp -v en_US/README_en_US.txt "${LICENSE_DIR}/en_us-dictionary-license.txt"
+extract "$SRC_DIR/en_US.oxt"
 
 # British English
-mkdir en_UK
-python -c "import zipfile; zipfile.ZipFile('${SRC_DIR}/en-GB.zip').extractall('en_UK')"
-cp -v en_UK/en-GB.dic        "${DICT_DIR}/en_gb.dic"
-cp -v en_UK/en-GB.aff        "${DICT_DIR}/en_gb.aff"
-cp -v en_UK/README_en_GB.txt "${LICENSE_DIR}/en_gb-dictionary-license.txt"
+extract "$SRC_DIR/en-GB.zip"
 
 # Spanish Spanish
-mkdir es_ES
-python -c "import zipfile; zipfile.ZipFile('${SRC_DIR}/es_ES.oxt').extractall('es_ES')"
-cp -v es_ES/es_ES.dic  "${DICT_DIR}/es_es.dic"
-cp -v es_ES/es_ES.aff  "${DICT_DIR}/es_es.aff"
-cp -v es_ES/README.txt "${LICENSE_DIR}/es_es-dictionary-license.txt"
+extract "$SRC_DIR/es_ES.oxt"
 
-# Brazillian Portugese
-mkdir pt_BR
-python -c "import zipfile; zipfile.ZipFile('${SRC_DIR}/Vero_pt_BR_V208AOC.oxt').extractall('pt_BR')"
-cp -v pt_BR/pt_BR.dic     "${DICT_DIR}/pt_br.dic"
-cp -v pt_BR/pt_BR.aff     "${DICT_DIR}/pt_br.aff"
-cp -v pt_BR/README_en.TXT "${LICENSE_DIR}/pt_br-dictionary-license.txt"
+# Brazilian Portugese
+extract "$SRC_DIR/Vero_pt_BR_V208AOC.oxt" "pt_BR" "README_en.TXT"
 
 pass
-
