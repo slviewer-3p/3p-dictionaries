@@ -1,14 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # turn on verbose debugging output for parabuild logs.
-set -x
+exec 4>&1; export BASH_XTRACEFD=4; set -x
 # make errors fatal
 set -e
 # complain about unset env variables
 set -u
 
 if [ -z "$AUTOBUILD" ] ; then 
-    fail
+    exit 1
 fi
 
 if [ "$OSTYPE" = "cygwin" ] ; then
@@ -17,17 +17,14 @@ else
     autobuild="$AUTOBUILD"
 fi
 
-# load autbuild provided shell functions and variables
-set +x
-eval "$("$autobuild" source_environment)"
-set -x
-
-# set LL_BUILD and friends
-set_build_variables convenience Release
-
 STAGING_DIR="$(pwd)"
 TOP_DIR="$(dirname "$0")"
 SRC_DIR="${TOP_DIR}/src"
+
+# load autobuild provided shell functions and variables
+source_environment_tempfile="$STAGING_DIR/source_environment.sh"
+"$autobuild" source_environment > "$source_environment_tempfile"
+. "$source_environment_tempfile"
 
 LICENSE_DIR="${STAGING_DIR}/LICENSES"
 test -d ${LICENSE_DIR} || mkdir ${LICENSE_DIR}
@@ -98,5 +95,3 @@ extract "$SRC_DIR/es_ES.oxt"
 
 # Brazilian Portugese
 extract "$SRC_DIR/Vero_pt_BR_V208AOC.oxt" "pt_BR" "README_en.TXT"
-
-pass
