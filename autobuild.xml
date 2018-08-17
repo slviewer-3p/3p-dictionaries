@@ -3,6 +3,8 @@
 <map>
     <key>package_description</key>
     <map>
+      <key>canonical_repo</key>
+      <string>https://bitbucket.org/lindenlab/3p-dictionaries</string>
       <key>copyright</key>
       <string>Copyright 2014 Apache OpenOffice software</string>
       <key>description</key>
@@ -23,8 +25,6 @@
           <map>
             <key>Release</key>
             <map>
-              <key>default</key>
-              <string>True</string>
               <key>build</key>
               <map>
                 <key>arguments</key>
@@ -34,6 +34,8 @@
                 <key>command</key>
                 <string>bash</string>
               </map>
+              <key>default</key>
+              <string>True</string>
               <key>name</key>
               <string>Release</string>
             </map>
